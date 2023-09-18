@@ -1,3 +1,5 @@
+
+
 install.packages(c('quantmod','ff','foreign','R.matlab'),dependency=T)
 
 suppressPackageStartupMessages(library(tidyverse)) #this dont work /// might work now
@@ -35,6 +37,9 @@ Fjoined <- full_join(nirs_datarecord,phenotypic_datarecord)
 Rjoined <- right_join(nirs_datarecord,phenotypic_datarecord)
 
 Summary(Ljoined) # Fjoin et R join aussi, fait un résumé
+# ou juste écrire par exemple ca et ca va donner un résumé
+phenotypic_datarecord
+
 View(Ljoined) # Fjoin et R join aussi 
 
 # moyen utile pck apres code a mattew fonctionne
@@ -45,11 +50,14 @@ capture.output(Ljoined,file="Ljoined.txt") #pour enregistrer dans mon ordi // do
 
 Fjoined$traitName <- NULL # pour supprimer une colonne du data frame
 
+colnames(phenotypic_datarecord) # pour voir les noms des colonnes 
+# sub = subset = éliminer des affaire, un sous tableau
 -----------------------------------------------------------------
   ## setup ----
 
 # load libraries
 library(tidyverse)
+library(readxl)
 
 # load data.
 # paths are specific to my computer so ou will have to change them. 
@@ -69,9 +77,6 @@ phenotypic_sub <- phenotypic_datarecord %>%
 # join data
 phenotypic_nirs_df <- left_join(phenotypic_sub, nirs_datarecord) %>% 
   drop_na()
-
-
-capture.output(phenotypic_nirs_df,file="phenotypic_nirs_df.txt")
 
 
 
