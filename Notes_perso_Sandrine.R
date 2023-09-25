@@ -159,7 +159,7 @@ head(sample_info2)
 
 plsr_data <- data.frame(sample_info2,Spectra) #join le sample et spectra
 
-# rm(sample_info,sample_info2,Spectra) (((pas encore sure de ca)))
+rm(sample_info,sample_info2,Spectra) #(((pas encore sure de ca)))
 
 #------------------------------------------------------------------------------------
 
@@ -186,14 +186,38 @@ method <- "dplyr" #base/dplyr
 
 split_data <- spectratrait::create_data_split(dataset=plsr_data, approach=method, 
                                               split_seed=7529075,prop=0.8, 
-                                              group_variables="Species_Code")
+                                              group_variables="AOP_status")
 names(split_data)
 cal.plsr.data <- split_data$cal_data
 head(cal.plsr.data)[1:8]
 val.plsr.data <- split_data$val_data
 head(val.plsr.data)[1:8]
 rm(split_data) 
-  
+
+# Datasets:
+print(paste("Cal observations: ",dim(cal.plsr.data)[1],sep=""))
+print(paste("Val observations: ",dim(val.plsr.data)[1],sep=""))
+
+
+text_loc <- c(max(hist(cal.plsr.data[,paste0(inVar)])$counts),
+              max(hist(cal.plsr.data[,paste0(inVar)])$mids))
+
+
+cal_hist_plot <- qplot(cal.plsr.data[,paste0(inVar)],geom="histogram",
+                       main = paste0("Calibration Histogram for ",inVar),
+                       xlab = paste0(inVar),ylab = "Count",fill=I("grey50"),col=I("black"),
+                       alpha=I(.7)) +
+  annotate("text", x=text_loc[2], y=text_loc[1], label= "1.",size=10)
+val_hist_plot <- qplot(val.plsr.data[,paste0(inVar)],geom="histogram",
+                       main = paste0("Validation Histogram for ",inVar),
+                       xlab = paste0(inVar),ylab = "Count",fill=I("grey50"),col=I("black"),
+                       alpha=I(.7))
+histograms <- grid.arrange(cal_hist_plot, val_hist_plot, ncol=2)
+ggsave(filename = file.path(outdir,paste0(inVar,"_Cal_Val_Histograms.png")), plot = histograms, 
+       device="png", width = 30, height = 12, units = "cm", dpi = 300)
+# output cal/val data
+write.csv(cal.plsr.data,file=file.path(outdir,paste0(inVar,'_Cal_PLSR_Dataset.csv')),row.names=FALSE)
+write.csv(val.plsr.data,file=file.path(outdir,paste0(inVar,'_Val_PLSR_Dataset.csv')),row.names=FALSE)
   
   
 
