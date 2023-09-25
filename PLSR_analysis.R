@@ -69,7 +69,7 @@ head(sample_info)
 
 
 sample_info2 <- sample_info %>%
-  select(X1001g_ID,AOP_status,Classification_name) ########## vraiment c'est données ou changer pour autre chose??
+  select(X1001g_ID,AOP_status,Classification_name) ########## vraiment ces données la ou changer pour autre chose??
 head(sample_info2)
 
 plsr_data <- data.frame(sample_info2,Spectra) #join le sample et spectra
@@ -78,7 +78,7 @@ plsr_data <- data.frame(sample_info2,Spectra) #join le sample et spectra
 
 
 
-c(inVar,paste0("Wave_",wv))]),] 
+c(inVar,paste0("Wave_",wv)) 
 
 
 #--------------------------------------------------------------------------------------------------#
