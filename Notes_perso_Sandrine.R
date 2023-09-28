@@ -220,16 +220,90 @@ write.csv(cal.plsr.data,file=file.path(outdir,paste0(inVar,'_Cal_PLSR_Dataset.cs
 write.csv(val.plsr.data,file=file.path(outdir,paste0(inVar,'_Val_PLSR_Dataset.csv')),row.names=FALSE)
   
   
+#--------------------------------------------------------------------------------------------------#
 
 
 
+#--------------------------------------------------------------------------------------------------#
 
 
+#--------------------------------------------------------------------------------------------------#
 
 
+#--------------------------------------------------------------------------------------------------#
+########## Changer pour PLSDA
 
 
+library(spectrolab)
+library(caret)
+library(plyr)
 
+
+# not in
+`%notin%` <- Negate(`%in%`)
+
+
+# Script options
+pls::pls.options(plsralg = "oscorespls")
+pls::pls.options("plsralg")
+
+
+# Default par options
+opar <- par(no.readonly = T)
+
+# What is the target variable?
+inVar <- "AOP_status"
+
+#---------------------------------------------------------------------------------
+
+#renaming all the column names of data frame
+
+range <- 350:2500
+
+colnames(full_df)[6:2156] <- c(range)
+
+
+### Create plsr dataset
+
+Start.wave <- 500 #(entre 500 et 2400nm )
+End.wave <- 2400
+wv <- seq(Start.wave,End.wave,1)
+Spectra <- as.matrix(full_df[,names(full_df) %in% wv])
+
+colnames(Spectra) <- c(paste0("Wave_",wv))
+head(Spectra)[1:6,1:10]
+sample_info <- full_df[,names(full_df) %notin% seq(350,2500,1)] 
+head(sample_info)
+
+
+sample_info2 <- sample_info %>%
+  select(X1001g_ID,AOP_status,Classification_name) 
+head(sample_info2)
+
+
+plsda_data <- data.frame(sample_info2,Spectra) #join le sample et spectra
+
+
+### Create training/testing datasets
+
+## split data into 60% training and 40% testing datasets, stratified by species
+set.seed(123456789)
+
+#use 70% of dataset as training set and 30% as test set
+sample <- sample(c(TRUE, FALSE), nrow(plsda_data), replace=TRUE, prob=c(0.7,0.3))
+train  <- plsda_data[sample, ]
+test   <- plsda_data[!sample, ]
+
+## here are two ways to deal with imbalance in #samples per group
+## ctrl1 downsamples so that no group has more members than the smallest
+## ctrl2 upsamples by duplicating members of smaller groups at random
+## another option is to use sample="smote" but that works less well here
+
+ctrl1 <- trainControl(method = "repeatedcv", repeats = 10, number=10,
+                      summaryFunction = multiClassSummary, sampling="down")
+
+ctrl2 <- trainControl(method = "repeatedcv", repeats = 10, number=10,
+                      summaryFunction = multiClassSummary, sampling="up")
 
 
 
