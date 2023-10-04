@@ -305,6 +305,59 @@ ctrl1 <- trainControl(method = "repeatedcv", repeats = 10, number=10,
 ctrl2 <- trainControl(method = "repeatedcv", repeats = 10, number=10,
                       summaryFunction = multiClassSummary, sampling="up")
 
+#--------------------------------------------------------------------------------------------------#
+
+
+
+#--------------------------------------------------------------------------------------------------#
+
+
+#--------------------------------------------------------------------------------------------------#
+
+
+#--------------------------------------------------------------------------------------------------#
+
+
+
+
+# Install and load the 'pls' package if not already installed
+if (!requireNamespace("pls", quietly = TRUE)) {
+  install.packages("pls")
+}
+
+library(pls)
+
+# Load your data
+# Replace 'your_data.csv' with the path to your data file
+data <- read.csv("your_data.csv")
+
+# Split the data into predictors (X) and the class labels (Y)
+X <- data[, -ncol(data)]  # Assuming the last column contains the class labels
+Y <- data[, ncol(data)]
+
+# Split the data into training and testing sets (e.g., 70% training, 30% testing)
+set.seed(123)  # for reproducibility
+train_index <- sample(1:nrow(data), 0.7 * nrow(data))
+X_train <- X[train_index, ]
+Y_train <- Y[train_index]
+X_test <- X[-train_index, ]
+Y_test <- Y[-train_index]
+
+# Perform PLS-DA
+n_comp <- 2  # Number of PLS components to use, you can change this
+plsda_model <- plsr(X_train, Y_train, ncomp = n_comp)
+
+# Predict the class labels for the test set
+Y_pred <- predict(plsda_model, newdata = X_test, type = "class")
+
+# Evaluate the model (e.g., calculate accuracy)
+accuracy <- sum(Y_pred == Y_test) / length(Y_test)
+cat("Accuracy:", accuracy, "\n")
+
+# You can also visualize the PLS-DA model if you have 2 components
+if (n_comp == 2) {
+  plot(plsda_model, comps = 1:2)
+}
 
 
 

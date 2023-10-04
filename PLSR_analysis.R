@@ -4,6 +4,10 @@
 # source in data
 source("manage_data.R")
 
+colnames(full_df)
+
+caret::train(x = select(full_df, (X350:X2000)), y = full_df$Classification_name)
+
 list.of.packages <- c("pls","dplyr","reshape2","here","plotrix","ggplot2","gridExtra",
                       "spectratrait")
 invisible(lapply(list.of.packages, library, character.only = TRUE))
@@ -41,7 +45,7 @@ pls::pls.options("plsralg")
 opar <- par(no.readonly = T)
 
 # What is the target variable?
-inVar <- "classification_name"
+inVar <- "AOP_status"
 
 #---------------------------------------------------------------------------------
 
@@ -73,7 +77,7 @@ sample_info2 <- sample_info %>%
 head(sample_info2)
 
 plsr_data <- data.frame(sample_info2,Spectra) #join le sample et spectra
-
+plsda_data <- data.frame(sample_info2,Spectra) #join le sample et spectra
 # rm(sample_info,sample_info2,Spectra) (((pas encore sure de ca)))
 
 
