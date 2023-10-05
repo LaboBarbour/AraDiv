@@ -49,3 +49,6 @@ check_katz_df <- full_df %>%
 check_katz_df
 length(unique(check_katz_df$cs_number))
 length(unique(check_katz_df$X1001g_ID))
+
+write_csv2(full_df, file = "full_df.csv")
+
