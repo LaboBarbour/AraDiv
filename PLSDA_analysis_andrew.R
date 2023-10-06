@@ -4,7 +4,7 @@ library(readr)
 library(tidyverse)
 
 
-
+write_csv2(full_df_clean, file = "full_df_clean.csv")
 
 # read in data
 full_df <- read_csv2("full_df.csv")
@@ -18,8 +18,6 @@ full_df_clean <- full_df |>
 
 # What is the target variable?
 inVar <- "AOP_status"
-
-
 
 
 ### Create plsrda dataset
@@ -73,20 +71,72 @@ alk_mso <- full_df_clean %>%
 
 summary(plsda_model)
 
-predict(plsda_model, newdata = alksum_mso)
+predict(plsda_model, newdata = alk_mso)
+
+
+#--------------------------------------------------------------------------------------------------#
+
+
+#--------------------------------------------------------------------------------------------------#
+
+
+#--------------------------------------------------------------------------------------------------#
+
+
+#Random Forest analysis
+
+
+#make this example reproducible
+set.seed(1234)
+
+
+#Make sure the predictor data is numeric of a factor
+class(full_df_clean$classification_name)
+
+#make another data set to not change the base dataset
+
+random_forest_data <- full_df_clean
+
+random_forest_data$classification_name <- as.factor(random_forest_data$classification_name)
+
+
+#fit the random forest model
+model <- randomForest(
+  formula = classification_name ~ .,
+  data = random_forest_data
+)
+
+#display fitted model
+model
+
+#find number of rows with missing values
+sum(!complete.cases(random_forest_data))
+
+#replace NAs with column medians only if there is
+for(i in 1:ncol(random_forest_data)) {
+  airquality[ , i][is.na(random_forest_data[ , i])] <- median(random_forest_data[ , i], na.rm=TRUE)
+}
+
+#remove every line not usefull, keep predictor and response data
+random_forest_data <- random_forest_data |> 
+  select(x350:x2500,
+         classification_name)
+
+
+call:
+  randomForest(formula = classification_name ~ ., data = random_forest_data) 
+
+
+#find number of trees that produce lowest test MSE
+which.min(model$mse)
 
 
 
-# 
-# train <- plsda.split_sample(plsda_small)$train
-# test <- plsda.split_sample(plsda_small)$test
-#head(train)
-#head(test)
+#find RMSE of best model
+sqrt(model$mse[which.min(model$mse)]) 
 
-#model <- plsda.fit(AOP_status~., plsda_small, ncomp = 2)
 
-#model$pls.coef
 
-#predict_post <- plsda.predict(model,test, type = "posterior")
-#predict_class <- plsda.predict(model,test, type = "class")
+
+
 
