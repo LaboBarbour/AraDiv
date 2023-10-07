@@ -806,6 +806,81 @@ sqrt(model$mse[which.min(model$mse)])
 
 
 
+#--------------------------------------------------------------------------------------------------#
+
+
+#--------------------------------------------------------------------------------------------------#
+
+
+#--------------------------------------------------------------------------------------------------#
+--------------------------------------------------------------------------------------------------#
+  
+  
+  
+  #--------------------------------------------------------------------------------------------------#
+  
+  
+  #--------------------------------------------------------------------------------------------------#
+  
+  
+  #--------------------------------------------------------------------------------------------------#
+  --------------------------------------------------------------------------------------------------#
+  
+  
+  
+  #--------------------------------------------------------------------------------------------------#
+  
+  
+  #--------------------------------------------------------------------------------------------------#
+  
+  
+  #--------------------------------------------------------------------------------------------------#
+
+PCA analysis
+
+
+# Generate a sample dataset (replace this with your own dataset)
+set.seed(123)
+num_samples <- 2150
+num_variables <- 7
+
+# Create a random dataset
+pca_data <- matrix(rnorm(num_samples * num_variables), nrow = num_samples)
+colnames(pca_data) <- c("Allyl", "OH-But", "3OHP", "3MSO", "4OHB", "4MSO", "Butenyl")
+
+# Center the data (subtract the mean of each variable)
+centered_data <- scale(pca_data, center = TRUE, scale = FALSE)
+
+# Calculate the covariance matrix
+cov_matrix <- cov(centered_data)
+
+# Perform singular value decomposition (SVD) of the covariance matrix
+svd_result <- svd(cov_matrix)
+
+# Extract the principal components
+pcs <- svd_result$u
+
+# Calculate the proportion of variance explained by each PC
+variance_explained <- (svd_result$d^2) / sum(svd_result$d^2)
+
+# Create a scree plot
+plot(1:num_variables, variance_explained, type = "b", 
+     xlab = "Principal Component", ylab = "Variance Explained",
+     main = "Scree Plot")
+
+# Biplot to visualize principal components
+# Create a biplot manually
+biplot_scale <- 1  # Adjust this scale for biplot arrow length
+
+# Plot the data points
+plot(pcs[, 1], pcs[, 2], type = "n", xlab = "PC1", ylab = "PC2")
+text(pcs[, 1], pcs[, 2], labels = rownames(pcs), col = "blue")
+
+# Add arrows for variable loadings
+loading_arrows <- svd_result$v[, 1:2] * sqrt(svd_result$d[1:2])
+arrows(0, 0, loading_arrows[, 1] * biplot_scale, loading_arrows[, 2] * biplot_scale, col = "red", length = 0.1)
+
+
 
 
 
