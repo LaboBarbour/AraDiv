@@ -145,7 +145,7 @@ sqrt(model$mse[which.min(model$mse)])
 
 
 #--------------------------------------------------------------------------------------------------#
---------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------#
   
   
   
@@ -156,7 +156,7 @@ sqrt(model$mse[which.min(model$mse)])
   
   
   #--------------------------------------------------------------------------------------------------#
-  --------------------------------------------------------------------------------------------------#
+ # --------------------------------------------------------------------------------------------------#
   
   
   
@@ -168,11 +168,11 @@ sqrt(model$mse[which.min(model$mse)])
   
   #--------------------------------------------------------------------------------------------------#
   
-PCA analysis
+#PCA analysis
 
 
 # Generate a sample dataset (replace this with your own dataset)
-set.seed(123)
+set.seed(1234)
 num_samples <- 2150
 num_variables <- 7
 
@@ -212,8 +212,16 @@ text(pcs[, 1], pcs[, 2], labels = rownames(pcs), col = "blue")
 loading_arrows <- svd_result$v[, 1:2] * sqrt(svd_result$d[1:2])
 arrows(0, 0, loading_arrows[, 1] * biplot_scale, loading_arrows[, 2] * biplot_scale, col = "red", length = 0.1)
 
+#---------------
+d<-pca_data
 
+pca <- prcomp(d[,-1], center=TRUE, scale.=TRUE, retx=TRUE)
+biplot(pca, scale=0, xlabs=rep("o",2150)) #distance entre objets (A)
+biplot(pca, scale=1, xlabs=rep("o",2150)) #distance entre descripteurs 
+(B
 
+installe.packages("plot3D")
+library(plot3D)
 
 
 
