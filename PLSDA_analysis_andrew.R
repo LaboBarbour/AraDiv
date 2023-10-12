@@ -218,10 +218,7 @@ d<-pca_data
 pca <- prcomp(d[,-1], center=TRUE, scale.=TRUE, retx=TRUE)
 biplot(pca, scale=0, xlabs=rep("o",2150)) #distance entre objets (A)
 biplot(pca, scale=1, xlabs=rep("o",2150)) #distance entre descripteurs 
-(B
 
-installe.packages("plot3D")
-library(plot3D)
 
 #----------------
 
