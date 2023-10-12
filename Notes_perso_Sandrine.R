@@ -942,6 +942,66 @@ print(canonical_variates_X)
 cat("Canonical Variables for Y:\n")
 print(canonical_variates_Y)
 
+#CHOIX 2
+
+
+install.packages("CCA")
+install.packages("CCP")
+require(ggplot2)
+require(GGally)
+require(CCA)
+require(CCP)
+
+mm <- read.csv("https://stats.idre.ucla.edu/stat/data/mmreg.csv")
+colnames(mm) <- c("Control", "Concept", "Motivation", "Read", "Write", "Math", 
+                  "Science", "Sex")
+summary(mm)
+
+xtabs(~Sex, data = mm)
+
+psych <- mm[, 1:3]
+acad <- mm[, 4:8]
+
+ggpairs(psych)
+
+ggpairs(acad)
+# correlations
+matcor(psych, acad)
+
+cc1 <- cc(psych, acad)
+# display the canonical correlations
+cc1$cor
+# raw canonical coefficients
+cc1[3:4]
+
+# compute canonical loadings
+cc2 <- comput(psych, acad, cc1)
+
+# display canonical loadings
+cc2[3:6]
+
+# tests of canonical dimensions
+rho <- cc1$cor
+## Define number of observations, number of variables in first set, and number of variables in the second set.
+n <- dim(psych)[1]
+p <- length(psych)
+q <- length(acad)
+
+## Calculate p-values using the F-approximations of different test statistics:
+p.asym(rho, n, p, q, tstat = "Wilks")
+
+# standardized psych canonical coefficients diagonal matrix of psych sd's
+s1 <- diag(sqrt(diag(cov(psych))))
+s1 %*% cc1$xcoef
+
+# standardized acad canonical coefficients diagonal matrix of acad sd's
+s2 <- diag(sqrt(diag(cov(acad))))
+s2 %*% cc1$ycoef
+
+
+
+
+
 
 
 

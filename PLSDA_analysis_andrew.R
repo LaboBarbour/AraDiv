@@ -223,6 +223,100 @@ biplot(pca, scale=1, xlabs=rep("o",2150)) #distance entre descripteurs
 installe.packages("plot3D")
 library(plot3D)
 
+#----------------
+
+install.packages("corrr")
+library('corrr')
+install.packages("ggcorrplot")
+library(ggcorrplot)
+install.packages("FactoMineR")
+library("FactoMineR")
+install.packages("factoextra")
+library(factoextra)
+#normalising the data
+
+data_normalized <- scale(pca_data)
+head(data_normalized)
+
+
+#compute the cerrelation matrix 
+
+corr_matrix <- cor(data_normalized)
+ggcorrplot(corr_matrix)
+
+data.pca <- princomp(corr_matrix)
+summary(data.pca)
+
+
+data.pca$loadings[, 1:2]
+
+fviz_eig(data.pca, addlabels = TRUE)
+
+# Graph of the variables
+fviz_pca_var(data.pca, col.var = "black")
+
+#contribution of each variable
+fviz_cos2(data.pca, choice = "var", axes = 1:2)
+
+#biplot combined with cos2
+
+# A low value means that the variable is not perfectly represented by that component. 
+# A high value, on the other hand, means a good representation of the variable on that component.
+
+
+fviz_pca_var(data.pca, col.var = "cos2",
+             gradient.cols = c("black", "orange", "green"),
+             repel = TRUE)
+
+#--------------------------------------------------------------------
+#--------------------------------------------------------------------
+#--------------------------------------------------------------------
+#--------------------------------------------------------------------
+
+#Canonical Correlation Analysis (CCA) 
+#encore en phase test, fonctionel mais pas encore essayé dans nos données a nous
+
+# Load the necessary library
+library(caret)
+
+# Create two example datasets with variables X1 to X5 and Y1 to Y5
+set.seed(1234)
+n <- 100
+X <- matrix(rnorm(n * 5), ncol = 5)
+Y <- matrix(rnorm(n * 5), ncol = 5)
+
+# Perform Canonical Correlation Analysis (CCA)
+cca_result <- cancor(X, Y)
+
+# Canonical Correlations
+canonical_correlations <- cca_result$cor
+
+# Canonical Variables (Canonical Variates)
+canonical_variates_X <- cca_result$xcoef
+canonical_variates_Y <- cca_result$ycoef
+
+# Print Canonical Correlations
+cat("Canonical Correlations:\n")
+print(canonical_correlations)
+
+# Print Canonical Variables (Canonical Variates) for X and Y
+cat("Canonical Variables for X:\n")
+print(canonical_variates_X)
+
+cat("Canonical Variables for Y:\n")
+print(canonical_variates_Y)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
