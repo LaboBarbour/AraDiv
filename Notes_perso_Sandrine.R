@@ -952,7 +952,7 @@ require(GGally)
 require(CCA)
 require(CCP)
 
-mm <- read.csv("https://stats.idre.ucla.edu/stat/data/mmreg.csv")
+
 colnames(mm) <- c("Control", "Concept", "Motivation", "Read", "Write", "Math", 
                   "Science", "Sex")
 summary(mm)
@@ -998,16 +998,25 @@ s1 %*% cc1$xcoef
 s2 <- diag(sqrt(diag(cov(acad))))
 s2 %*% cc1$ycoef
 
+#--------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------#
+install.packages("jmv")
+library(jmv)
+
+mancova_data <- full_df_clean |>  
+  select(starts_with("x"),classification_name) |> 
+  select(-x1001g_id)
+
+numeric_vars_mancova <- mancova_data %>%
+  select(-classification_name)
+
+# Perform MANCOVA
+manova_result <- manova(numeric_vars_mancova ~ classification_name, data = full_df_clean)
 
 
-
-
-
-
-
-
-
-
+mancova(data = full_df_clean,
+        deps = 1:2151,
+        factors = classification_name)
 
 
 
