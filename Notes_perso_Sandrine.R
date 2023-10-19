@@ -1037,49 +1037,76 @@ set.seed(12345)
 # Specify the proportion for the validation dataset
 validation_proportion <- 0.3  # You can adjust this as needed
 
-# Create a random sample of data points for the validation dataset
-validation_indexes <- createDataPartition(full_df_clean$classification_name, 
-                                          p = validation_proportion, 
-                                          list = FALSE)
-
-
 #clean up data for val/cal dataset
 
 
 full_df_clean_reduced <- full_df_clean %>%
   select(starts_with("x"), -x1001g_id, classification_name)
 
+# Create a random sample of data points for the validation dataset
+validation_indexes = createDataPartition(full_df_clean_reduced$classification_name, 
+                                          p = validation_proportion, 
+                                          list = FALSE)
+
 
 # Create the validation dataset
 
-validation_data <- (full_df_clean_reduced[validation_indexes, ]) 
-
-
-
+Xv <- (full_df_clean_reduced[validation_indexes,1:2151 ]) 
 
 
 # The remaining data will be used for calibration
-calibration_data <- (full_df_clean_reduced[-validation_indexes, ]) 
+Xc <- (full_df_clean_reduced[-validation_indexes,1:2151 ]) 
+
+#those are factors and the classes you wish to predict
+
+cv.all = (full_df_clean_reduced[validation_indexes, 2152])
+cc.all = (full_df_clean_reduced[-validation_indexes, 2152])
+
+#transform in factors
+cv.all_factor <- as.factor(cv.all$classification_name)
+cc.all_factor <- as.factor(cc.all$classification_name)
+
+
+#calibrating the data
+calibration_validation <- plsda(Xv, cv.all_factor, ncomp = 7, cv = 1)
+
+calibration_calibration <- plsda(Xc, cc.all_factor, ncomp = 7, cv = 1)
+
+summary(calibration_validation, nc = 3)
 
 
 
 
-chemotype_vec <- factor(full_df_clean_reduced$classification_name)
-
-# Assuming 'calibration_data' contains a column 'row_id' that identifies the rows to be extracted
-row_indices_calibration <- c(calibration_data$classification_name)
-row_indices_validation <- c(validation_data$classification_name)
 
 
-# Subsetting the rows from 'full_df_clean_reduced'
 
 
-Xc = full_df_clean_reduced[row_indices_calibration, 1:2151]
 
-Xv = full_df_clean_reduced[row_indices_validation, 1:2151]
 
-cc.all = full_df_clean_reduced[row_indices_calibration,2152 ]
-cv.all = full_df_clean_reduced[row_indices_validation, 2152]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
