@@ -2,8 +2,7 @@ library(janitor)
 library(pls)
 library(readr)
 library(tidyverse)
-
-
+library(mdatools)
 
 # read in data
 full_df <- read_csv2("full_df.csv")

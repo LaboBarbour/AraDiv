@@ -1017,8 +1017,69 @@ manova_result <- manova(numeric_vars_mancova ~ classification_name, data = full_
 mancova(data = full_df_clean,
         deps = 1:2151,
         factors = classification_name)
+#--------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------#
+# this works, i created validation and calibration model 30/70
+
+# Load the caret package
+library(caret)
+
+# Assuming your data is stored in a data frame called 'your_data'
+# Replace 'your_data' with your actual data frame name
+
+# Set the seed for reproducibility
+set.seed(12345)
 
 
+# Specify the proportion for the validation dataset
+validation_proportion <- 0.3  # You can adjust this as needed
+
+# Create a random sample of data points for the validation dataset
+validation_indexes <- createDataPartition(full_df_clean$classification_name, 
+                                          p = validation_proportion, 
+                                          list = FALSE)
+
+
+#clean up data for val/cal dataset
+
+
+full_df_clean_reduced <- full_df_clean %>%
+  select(starts_with("x"), -x1001g_id, classification_name)
+
+
+# Create the validation dataset
+
+validation_data <- (full_df_clean_reduced[validation_indexes, ]) 
+
+
+
+
+
+# The remaining data will be used for calibration
+calibration_data <- (full_df_clean_reduced[-validation_indexes, ]) 
+
+
+
+
+chemotype_vec <- factor(full_df_clean_reduced$classification_name)
+
+# Assuming 'calibration_data' contains a column 'row_id' that identifies the rows to be extracted
+row_indices_calibration <- c(calibration_data$classification_name)
+row_indices_validation <- c(validation_data$classification_name)
+
+
+# Subsetting the rows from 'full_df_clean_reduced'
+
+
+Xc = full_df_clean_reduced[row_indices_calibration, 1:2151]
+
+Xv = full_df_clean_reduced[row_indices_validation, 1:2151]
+
+cc.all = full_df_clean_reduced[row_indices_calibration,2152 ]
+cv.all = full_df_clean_reduced[row_indices_validation, 2152]
 
 
 
