@@ -2,6 +2,7 @@ library(janitor)
 library(pls)
 library(readr)
 library(tidyverse)
+library(caret)
 library(mdatools)
 
 # read in data

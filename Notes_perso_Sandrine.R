@@ -1027,8 +1027,10 @@ mancova(data = full_df_clean,
 # Load the caret package
 library(caret)
 
-# Assuming your data is stored in a data frame called 'your_data'
-# Replace 'your_data' with your actual data frame name
+full_df <- read_csv2("full_df.csv")
+
+full_df_clean <- full_df |> 
+  clean_names()
 
 # Set the seed for reproducibility
 set.seed(12345)
@@ -1051,28 +1053,30 @@ validation_indexes = createDataPartition(full_df_clean_reduced$classification_na
 
 # Create the validation dataset
 
-Xv <- (full_df_clean_reduced[validation_indexes,1:2151 ]) 
+Xc <- (full_df_clean_reduced[-validation_indexes,1:2151 ]) 
 
 
 # The remaining data will be used for calibration
-Xc <- (full_df_clean_reduced[-validation_indexes,1:2151 ]) 
+Xv <- (full_df_clean_reduced[validation_indexes,1:2151 ]) 
 
 #those are factors and the classes you wish to predict
 
-cv.all = (full_df_clean_reduced[validation_indexes, 2152])
 cc.all = (full_df_clean_reduced[-validation_indexes, 2152])
+cv.all = (full_df_clean_reduced[validation_indexes, 2152])
 
 #transform in factors
-cv.all_factor <- as.factor(cv.all$classification_name)
 cc.all_factor <- as.factor(cc.all$classification_name)
+cv.all_factor <- as.factor(cv.all$classification_name)
 
 
-#calibrating the data
-calibration_validation <- plsda(Xv, cv.all_factor, ncomp = 7, cv = 1)
+# calibrating the data
+m.all.c <- plsda(Xc, cc.all_factor, ncomp = 2, cv = 1)
 
-calibration_calibration <- plsda(Xc, cc.all_factor, ncomp = 7, cv = 1)
+m.all.v <- plsda(Xv, cv.all_factor, ncomp = 2, cv = 1)
 
-summary(calibration_validation, nc = 3)
+summary(m.all.c)
+
+
 
 
 
