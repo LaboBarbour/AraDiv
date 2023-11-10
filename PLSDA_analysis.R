@@ -49,7 +49,6 @@ full_df_clean_reduced <- full_df_clean %>%
   select(starts_with("x"), -x1001g_id, classification_name)
 
 
-
 #------------------------------------------------------------------------------
 #making a pca analysis to know how many comp are needed
 library(ggfortify)
@@ -96,33 +95,30 @@ table(full_df_clean_reduced$classification_name)
 table(cc.all_factor)
 
 # calibrating the data
-m.all.c <- plsda(Xc, cc.all_factor, ncomp = 7, cv = 1)
-
-m.all.v <- plsda(Xv, cv.all_factor, ncomp = 7, cv = 1)
+m.all.c <- plsda(Xc, cc.all_factor, ncomp = 2, cv = 1)
 
 summary(m.all.c)
-summary(m.all.v)
+
 
 #to look for a single component/class
 summary(m.all.c, nc = 3)
-summary(m.all.v, nc = 3)
+
 
 #show statistics only for calibration or only for cross-validation parts, 
 #in this case you will see details about contribution of every component 
 #to the model.
 
 summary(m.all.c$calres)
-summary(m.all.v$calres)
+
 
 getConfusionMatrix(m.all.c$calres)
-getConfusionMatrix(m.all.v$calres)
 
 
 #classification plot
 
 par(mfrow = c(1, 2))
 plotPredictions(m.all.c,ncomp = 3)
-plotPredictions(m.all.v, ncomp = 3 )
+
 
 #multiple classes model you can select which class to show the predictions for.
 
@@ -131,45 +127,33 @@ plotPredictions(m.all.c, ncomp = 6)
 plotPredictions(m.all.c, ncomp = 6)
 
 # performance plots 
-par(mfrow = c(2, 1))
+par(mfrow = c(3, 1))
+
 plotMisclassified(m.all.c, nc = 7)
-plotMisclassified(m.all.v, nc = 7)
+
 
 plotSensitivity(m.all.c, nc = 7)
-plotSensitivity(m.all.v, nc = 7)
+
 
 plotSpecificity(m.all.c, nc = 7)
-plotSpecificity(m.all.v, nc = 7)
+
 
 # add show.ci = TRUE at the end if you want to see the error bars
 
 par(mfrow = c(3, 1))
 
-plotRegcoeffs(m.all.c, ncomp = 7, ny = 1)
-plotRegcoeffs(m.all.c, ncomp = 7, ny = 2)
-plotRegcoeffs(m.all.c, ncomp = 7, ny = 3)
-plotRegcoeffs(m.all.c, ncomp = 7, ny = 4)
-plotRegcoeffs(m.all.c, ncomp = 7, ny = 5)
-plotRegcoeffs(m.all.c, ncomp = 7, ny = 6)
-plotRegcoeffs(m.all.c, ncomp = 7, ny = 7)
+plotRegcoeffs(m.all.c, ncomp = 2, ny = 1)
+plotRegcoeffs(m.all.c, ncomp = 2, ny = 2)
+plotRegcoeffs(m.all.c, ncomp = 2, ny = 3)
+plotRegcoeffs(m.all.c, ncomp = 2, ny = 4)
+plotRegcoeffs(m.all.c, ncomp = 2, ny = 5)
+plotRegcoeffs(m.all.c, ncomp = 2, ny = 6)
+plotRegcoeffs(m.all.c, ncomp = 2, ny = 7)
 
-plotRegcoeffs(m.all.v, ncomp = 7, ny = 1)
-plotRegcoeffs(m.all.v, ncomp = 7, ny = 2)
-plotRegcoeffs(m.all.v, ncomp = 7, ny = 3)
-plotRegcoeffs(m.all.v, ncomp = 7, ny = 4)
-plotRegcoeffs(m.all.v, ncomp = 7, ny = 5)
-plotRegcoeffs(m.all.v, ncomp = 7, ny = 6)
-plotRegcoeffs(m.all.v, ncomp = 7, ny = 7)
 
 
 
 # prediction for new data
-
-summary(m.all.v$calres)
-
-par(mfrow = c(1, 1))
-plotPredictions(m.all.v$calres, ncomp = 7)
-
 
 res = predict(m.all.c, Xv, cv.all_factor)
 summary(res)
