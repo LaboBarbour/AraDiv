@@ -86,7 +86,40 @@ getConfusionMatrix(m.all.c_aop$calres)
 #classification plot
 
 par(mfrow = c(1, 2))
-plotPredictions(m.all.c_aop,ncomp = 3)
+plotPredictions(m.all.c_aop,ncomp = 2)
+
+#multiple classes model you can select which class to show the predictions for.
+
+par(mfrow = c(1, 1))
+plotPredictions(m.all.c_aop, ncomp = 2)
+
+
+# performance plots 
+par(mfrow = c(3, 1))
+
+plotMisclassified(m.all.c_aop, nc = 2)
+
+
+plotSensitivity(m.all.c_aop, nc = 2)
+
+
+plotSpecificity(m.all.c_aop, nc = 2)
+
+
+# add show.ci = TRUE at the end if you want to see the error bars
+
+par(mfrow = c(3, 1))
+
+plotRegcoeffs(m.all.c_aop, ncomp = 2, ny = 1)
+plotRegcoeffs(m.all.c_aop, ncomp = 2, ny = 2)
+plotRegcoeffs(m.all.c_aop, ncomp = 2, ny = 3)
+
+
+# prediction for new data
+
+res = predict(m.all.c_aop, Xv_aop, cv.all_aop_factor)
+summary(res)
+
 
 
 

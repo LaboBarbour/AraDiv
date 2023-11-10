@@ -65,7 +65,7 @@ table(full_df_clean_mam$mam_status)
 table(cc.all_mam_factor)
 
 # calibrating the data
-m.all.c_mam <- plsda(Xc_mam, cc.all_mam_factor, ncomp = 2, cv = 1)
+m.all.c_mam <- plsda(Xc_mam, cc.all_mam_factor, ncomp = 2, cv = 1, method = "oscorespls"))
 
 summary(m.all.c_mam)
 
@@ -86,6 +86,59 @@ getConfusionMatrix(m.all.c_mam$calres)
 #classification plot
 
 par(mfrow = c(1, 2))
-plotPredictions(m.all.c_mam,ncomp = 3)
+plotPredictions(m.all.c_mam,ncomp = 2)
+
+#multiple classes model you can select which class to show the predictions for.
+
+par(mfrow = c(1, 1))
+plotPredictions(m.all.c_mam, ncomp = 2)
+
+
+# performance plots 
+par(mfrow = c(3, 1))
+
+plotMisclassified(m.all.c_mam, nc = 2)
+
+
+plotSensitivity(m.all.c_mam, nc = 2)
+
+
+plotSpecificity(m.all.c_mam, nc = 2)
+
+
+# add show.ci = TRUE at the end if you want to see the error bars
+
+par(mfrow = c(3, 1))
+
+plotRegcoeffs(m.all.c_mam, ncomp = 2, ny = 1)
+plotRegcoeffs(m.all.c_mam, ncomp = 2, ny = 2)
+
+
+
+# prediction for new data
+
+res = predict(m.all.c_mam, Xv_mam, cv.all_mam_factor)
+summary(res)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

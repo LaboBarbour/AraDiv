@@ -124,7 +124,7 @@ plotPredictions(m.all.c,ncomp = 3)
 
 par(mfrow = c(1, 2))
 plotPredictions(m.all.c, ncomp = 6)
-plotPredictions(m.all.c, ncomp = 6)
+
 
 # performance plots 
 par(mfrow = c(3, 1))
