@@ -101,7 +101,7 @@ summary(m.all.c)
 
 
 #to look for a single component/class
-summary(m.all.c, nc = 3)
+summary(m.all.c, nc = 2)
 
 
 #show statistics only for calibration or only for cross-validation parts, 
@@ -116,39 +116,35 @@ getConfusionMatrix(m.all.c$calres)
 
 #classification plot
 
-par(mfrow = c(1, 2))
-plotPredictions(m.all.c,ncomp = 3)
+
+plotPredictions(m.all.c,ncomp = 2)
 
 
 #multiple classes model you can select which class to show the predictions for.
 
 par(mfrow = c(1, 2))
-plotPredictions(m.all.c, ncomp = 6)
+plotPredictions(m.all.c, ncomp = 2)
 
 
 # performance plots 
 par(mfrow = c(3, 1))
 
-plotMisclassified(m.all.c, nc = 7)
+plotMisclassified(m.all.c, nc = 2)
 
 
-plotSensitivity(m.all.c, nc = 7)
+plotSensitivity(m.all.c, nc = 2)
 
 
-plotSpecificity(m.all.c, nc = 7)
+plotSpecificity(m.all.c, nc = 2)
 
 
 # add show.ci = TRUE at the end if you want to see the error bars
 
-par(mfrow = c(3, 1))
+par(mfrow = c(2, 1))
 
 plotRegcoeffs(m.all.c, ncomp = 2, ny = 1)
 plotRegcoeffs(m.all.c, ncomp = 2, ny = 2)
-plotRegcoeffs(m.all.c, ncomp = 2, ny = 3)
-plotRegcoeffs(m.all.c, ncomp = 2, ny = 4)
-plotRegcoeffs(m.all.c, ncomp = 2, ny = 5)
-plotRegcoeffs(m.all.c, ncomp = 2, ny = 6)
-plotRegcoeffs(m.all.c, ncomp = 2, ny = 7)
+
 
 
 

@@ -65,13 +65,13 @@ table(full_df_clean_mam$mam_status)
 table(cc.all_mam_factor)
 
 # calibrating the data
-m.all.c_mam <- plsda(Xc_mam, cc.all_mam_factor, ncomp = 2, cv = 1, method = "oscorespls"))
+m.all.c_mam <- plsda(Xc_mam, cc.all_mam_factor, ncomp = 2, cv = 1)
 
 summary(m.all.c_mam)
 
 
 #to look for a single component/class
-summary(m.all.c_mam, nc = 3)
+summary(m.all.c_mam, nc = 2)
 
 #show statistics only for calibration or only for cross-validation parts, 
 #in this case you will see details about contribution of every component 
@@ -108,7 +108,7 @@ plotSpecificity(m.all.c_mam, nc = 2)
 
 # add show.ci = TRUE at the end if you want to see the error bars
 
-par(mfrow = c(3, 1))
+par(mfrow = c(2, 1))
 
 plotRegcoeffs(m.all.c_mam, ncomp = 2, ny = 1)
 plotRegcoeffs(m.all.c_mam, ncomp = 2, ny = 2)

@@ -58,7 +58,7 @@ cv.all_gsoh = (full_df_clean_gsoh[validation_indexes_gsoh, 2152])
 
 #transform in factors
 cc.all_gsoh_factor <- as.factor(cc.all_gsoh$gsoh_functionality)
-cv.all_gsoh_factor <- as.factor(cv.all_aop$gsoh_functionality)
+cv.all_gsoh_factor <- as.factor(cv.all_gsoh$gsoh_functionality)
 
 #to make sure its 30/70
 table(full_df_clean_gsoh$gsoh_functionality)
@@ -71,7 +71,7 @@ summary(m.all.c_gsoh)
 
 
 #to look for a single component/class
-summary(m.all.c_gsoh, nc = 3)
+summary(m.all.c_gsoh, nc = 2)
 
 #show statistics only for calibration or only for cross-validation parts, 
 #in this case you will see details about contribution of every component 
@@ -87,11 +87,13 @@ getConfusionMatrix(m.all.c_gsoh$calres)
 
 par(mfrow = c(1, 2))
 plotPredictions(m.all.c_gsoh,ncomp = 2)
+plotPredictions(m.all.c_gsoh,ncomp = 1)
 
 #multiple classes model you can select which class to show the predictions for.
 
-par(mfrow = c(1, 1))
+par(mfrow = c(1, 2))
 plotPredictions(m.all.c_gsoh, ncomp = 2)
+plotPredictions(m.all.c_gsoh, ncomp = 1)
 
 
 # performance plots 
@@ -108,11 +110,11 @@ plotSpecificity(m.all.c_gsoh, nc = 2)
 
 # add show.ci = TRUE at the end if you want to see the error bars
 
-par(mfrow = c(3, 1))
+par(mfrow = c(2, 1))
 
 plotRegcoeffs(m.all.c_gsoh, ncomp = 2, ny = 1)
 plotRegcoeffs(m.all.c_gsoh, ncomp = 2, ny = 2)
-plotRegcoeffs(m.all.c_gsoh, ncomp = 2, ny = 3)
+
 
 
 # prediction for new data
