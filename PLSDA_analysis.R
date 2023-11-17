@@ -21,7 +21,6 @@ summary(model)
 plot(model)
 
 
-
 #i created validation and calibration model 30/70
 #this is the same analysis than the example : https://www.mdatools.com/docs/plsda--calibration.html
 # i changed the way i created the data split to make it work with my data
@@ -30,10 +29,7 @@ plot(model)
 library(caret)
 library(mdatools)
 
-full_df <- read_csv2("full_df.csv")
-
-full_df_clean <- full_df |> 
-  clean_names()
+full_df_clean <- read_csv2("full_df_clean.csv")
 
 # Set the seed for reproducibility
 set.seed(12345)
@@ -43,7 +39,6 @@ set.seed(12345)
 validation_proportion <- 0.3  # You can adjust this as needed
 
 #clean up data for val/cal dataset
-
 
 full_df_clean_reduced <- full_df_clean %>%
   select(starts_with("x"), -x1001g_id, classification_name)
