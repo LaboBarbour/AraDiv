@@ -2,8 +2,9 @@
 ## Setup ----
 
 # load libraries
-library(tidyverse)
 library(mdatools)
+library(tidyverse)
+
 
 # load data
 full_df_clean <- read_csv2("full_df_clean.csv")
@@ -26,8 +27,8 @@ plot(model)
 # i changed the way i created the data split to make it work with my data
 
 # Load the caret package
-library(caret)
 library(mdatools)
+library(caret)
 
 full_df_clean <- read_csv2("full_df_clean.csv")
 

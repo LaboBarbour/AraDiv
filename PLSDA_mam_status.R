@@ -1,10 +1,9 @@
 ## Setup ----
 
 # load libraries
-library(tidyverse)
 library(mdatools)
+library(tidyverse)
 library(caret)
-
 # load data
 full_df_clean <- read_csv2("full_df_clean.csv")
 

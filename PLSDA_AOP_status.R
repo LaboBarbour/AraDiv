@@ -1,8 +1,8 @@
 ## Setup ----
 
 # load libraries
-library(tidyverse)
 library(mdatools)
+library(tidyverse)
 library(caret)
 
 # load data
