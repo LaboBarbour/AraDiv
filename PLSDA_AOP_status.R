@@ -16,7 +16,6 @@ validation_proportion <- 0.3  # You can adjust this as needed
 
 #clean up data for val/cal dataset
 
-
 full_df_clean_aop <- full_df_clean %>%
   select(starts_with("x"), -x1001g_id, aop_status)
 
@@ -40,6 +39,7 @@ autoplot(pca_res_scaled_aop, data = full_df_clean_aop, color = "aop_status") +
 #continuing the analysis with the ncomp in mind 
 
 # Create a random sample of data points for the validation dataset
+library(caret)
 validation_indexes_aop = createDataPartition(full_df_clean_aop$aop_status, 
                                          p = validation_proportion, 
                                          list = FALSE)
@@ -65,6 +65,7 @@ table(full_df_clean_aop$aop_status)
 table(cc.all_aop_factor)
 
 # calibrating the data
+library(mdatools)
 m.all.c_aop <- plsda(Xc_aop, cc.all_aop_factor, ncomp = 2, cv = 1)
 
 summary(m.all.c_aop)

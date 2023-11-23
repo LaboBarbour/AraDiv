@@ -39,6 +39,8 @@ autoplot(pca_res_scaled_gsoh, data = full_df_clean_gsoh, color = "gsoh_functiona
 #continuing the analysis with the ncomp in mind 
 
 # Create a random sample of data points for the validation dataset
+#force the package
+library(caret)
 validation_indexes_gsoh = createDataPartition(full_df_clean_gsoh$gsoh_functionality, 
                                              p = validation_proportion, 
                                              list = FALSE)
@@ -64,6 +66,8 @@ table(full_df_clean_gsoh$gsoh_functionality)
 table(cc.all_gsoh_factor)
 
 # calibrating the data
+#force the package
+library(mdatools)
 m.all.c_gsoh <- plsda(Xc_gsoh, cc.all_gsoh_factor, ncomp = 2, cv = 1)
 
 summary(m.all.c_gsoh)

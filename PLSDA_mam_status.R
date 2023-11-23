@@ -39,6 +39,7 @@ autoplot(pca_res_scaled_mam, data = full_df_clean_mam, color = "mam_status") +
 #continuing the analysis with the ncomp in mind 
 
 # Create a random sample of data points for the validation dataset
+library(caret)
 validation_indexes_mam = createDataPartition(full_df_clean_mam$mam_status, 
                                              p = validation_proportion, 
                                              list = FALSE)
@@ -64,6 +65,7 @@ table(full_df_clean_mam$mam_status)
 table(cc.all_mam_factor)
 
 # calibrating the data
+library(mdatools)
 m.all.c_mam <- plsda(Xc_mam, cc.all_mam_factor, ncomp = 2, cv = 1)
 
 summary(m.all.c_mam)
