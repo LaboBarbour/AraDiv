@@ -14,8 +14,8 @@ set.seed(12345)
 validation_proportion <- 0.3  # You can adjust this as needed
 
 #clean up data for val/cal dataset
-
-
+#force tidyverse 
+library(tidyverse)
 full_df_clean_gsoh <- full_df_clean %>%
   select(starts_with("x"), -x1001g_id, gsoh_functionality)
 
@@ -66,7 +66,8 @@ table(full_df_clean_gsoh$gsoh_functionality)
 table(cc.all_gsoh_factor)
 
 # calibrating the data
-#force the package
+#forcing mdatools
+install.packages("mdatools")
 library(mdatools)
 m.all.c_gsoh <- plsda(Xc_gsoh, cc.all_gsoh_factor, ncomp = 2, cv = 1)
 

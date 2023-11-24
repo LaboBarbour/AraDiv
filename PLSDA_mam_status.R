@@ -14,8 +14,8 @@ set.seed(12345)
 validation_proportion <- 0.3  # You can adjust this as needed
 
 #clean up data for val/cal dataset
-
-
+#force tidyverse
+library(tidyverse)
 full_df_clean_mam <- full_df_clean %>%
   select(starts_with("x"), -x1001g_id, mam_status)
 
@@ -65,6 +65,7 @@ table(full_df_clean_mam$mam_status)
 table(cc.all_mam_factor)
 
 # calibrating the data
+install.packages("mdatools")
 library(mdatools)
 m.all.c_mam <- plsda(Xc_mam, cc.all_mam_factor, ncomp = 2, cv = 1)
 

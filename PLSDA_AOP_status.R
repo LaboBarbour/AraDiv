@@ -15,7 +15,8 @@ set.seed(12345)
 validation_proportion <- 0.3  # You can adjust this as needed
 
 #clean up data for val/cal dataset
-
+#forcing tidyverse
+library(tidyverse)
 full_df_clean_aop <- full_df_clean %>%
   select(starts_with("x"), -x1001g_id, aop_status)
 
@@ -65,6 +66,8 @@ table(full_df_clean_aop$aop_status)
 table(cc.all_aop_factor)
 
 # calibrating the data
+#forcing mdatools
+install.packages("mdatools")
 library(mdatools)
 m.all.c_aop <- plsda(Xc_aop, cc.all_aop_factor, ncomp = 2, cv = 1)
 

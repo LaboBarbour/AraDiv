@@ -40,7 +40,8 @@ set.seed(12345)
 validation_proportion <- 0.3  # You can adjust this as needed
 
 #clean up data for val/cal dataset
-
+#force tydiverse
+library(tidyverse)
 full_df_clean_reduced <- full_df_clean %>%
   select(starts_with("x"), -x1001g_id, classification_name)
 
