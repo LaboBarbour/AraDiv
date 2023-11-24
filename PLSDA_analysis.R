@@ -65,6 +65,8 @@ autoplot(pca_res_scaled, data = full_df_clean_reduced, color = "classification_n
 #continuing the analysis with the ncomp in mind 
 
 # Create a random sample of data points for the validation dataset
+#force the package 
+library(caret)
 validation_indexes = createDataPartition(full_df_clean_reduced$classification_name, 
                                          p = validation_proportion, 
                                          list = FALSE)
@@ -91,6 +93,8 @@ table(full_df_clean_reduced$classification_name)
 table(cc.all_factor)
 
 # calibrating the data
+#force the package
+library(mdatools)
 m.all.c <- plsda(Xc, cc.all_factor, ncomp = 2, cv = 1)
 
 summary(m.all.c)
